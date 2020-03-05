@@ -167,6 +167,7 @@ func NewMemChunk(v interface{}, n uint) (MemChunk, error) {
 
 		slice: slice,
 		bytes: bytes,
+		Empty: false,
 	}
 
 	// set a finalizer to free the chunk's memory when it would normally be
@@ -177,7 +178,9 @@ func NewMemChunk(v interface{}, n uint) (MemChunk, error) {
 		}
 	})
 
-	ret.Empty = false
+	if ret.objSize == 0 {
+		ret.Empty = true
+	}
 
 	return ret, nil
 }
