@@ -62,7 +62,7 @@ func typeCheck(t reflect.Type) error {
 type MemChunk struct {
 	chunkSize uintptr
 	objSize   uintptr
-	Empty     bool
+	Filled    bool
 
 	slice reflect.Value
 	bytes []byte
@@ -165,9 +165,9 @@ func NewMemChunk(v interface{}, n uint) (MemChunk, error) {
 		chunkSize: size * uintptr(n),
 		objSize:   size,
 
-		slice: slice,
-		bytes: bytes,
-		Empty: false,
+		slice:  slice,
+		bytes:  bytes,
+		Filled: true,
 	}
 
 	// set a finalizer to free the chunk's memory when it would normally be
@@ -178,8 +178,8 @@ func NewMemChunk(v interface{}, n uint) (MemChunk, error) {
 		}
 	})
 
-	if ret.objSize == 0 {
-		ret.Empty = true
+	if ret.objSize != 0 {
+		ret.Filled = true
 	}
 
 	return ret, nil

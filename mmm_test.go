@@ -117,3 +117,16 @@ func TestNewMemChunk(t *testing.T) {
 	// run GC cycle; finalizers should run
 	runtime.GC()
 }
+
+func TestNewMemChunkNegative(t *testing.T) {
+	out, err := NewMemChunk(byte(0), uint(0))
+	t.Log(out)
+	t.Log(err)
+	t.Log(out.Filled)
+	if !out.Filled {
+		t.Fail()
+	}
+
+	o := MemChunk{}
+	t.Log(o.Filled)
+}
