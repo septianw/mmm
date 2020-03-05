@@ -62,6 +62,7 @@ func typeCheck(t reflect.Type) error {
 type MemChunk struct {
 	chunkSize uintptr
 	objSize   uintptr
+	Empty     bool
 
 	slice reflect.Value
 	bytes []byte
@@ -175,6 +176,8 @@ func NewMemChunk(v interface{}, n uint) (MemChunk, error) {
 			chunk.Delete()
 		}
 	})
+
+	ret.Empty = false
 
 	return ret, nil
 }
